@@ -22,266 +22,101 @@
             --font-serif: 'STSong', 'Songti SC', 'Noto Serif SC', 'SimSun', 'KaiTi', serif;
             --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
         }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: var(--font-sans);
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: var(--font-sans); 
             background: linear-gradient(160deg, #fdf6ec 0%, #f9f0e2 30%, #fdf8f0 60%, #faf3e8 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 16px;
-            color: var(--text);
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start; 
+            padding: 16px; 
+            color: var(--text); 
             -webkit-tap-highlight-color: transparent;
         }
-        .app-container {
-            width: 100%;
-            max-width: 600px;
+        .app-container { width: 100%; max-width: 600px; }
+        .app-header { text-align: center; margin-bottom: 16px; }
+        .app-header h1 { font-family: var(--font-serif); font-size: 26px; font-weight: 700; color: var(--primary); }
+        .app-header .subtitle { font-size: 13px; color: var(--text-light); }
+        .tab-nav { 
+            display: flex; gap: 6px; background: var(--card-bg); 
+            border-radius: var(--radius); padding: 5px; box-shadow: var(--shadow); margin-bottom: 16px; 
         }
-        .app-header {
-            text-align: center;
-            margin-bottom: 16px;
+        .tab-btn { 
+            flex: 1; padding: 12px; border: none; cursor: pointer; font-size: 15px; font-weight: 600; 
+            border-radius: 10px; background: transparent; color: var(--text-light); transition: 0.2s; 
         }
-        .app-header h1 {
-            font-family: var(--font-serif);
-            font-size: 26px;
-            font-weight: 700;
-            color: var(--primary);
+        .tab-btn.active { background: var(--primary); color: #fff; }
+        .page { display: none; }
+        .page.active { display: block; }
+        .card { 
+            background: var(--card-bg); border-radius: var(--radius); padding: 20px; margin-bottom: 14px; 
+            box-shadow: var(--shadow); border: 1px solid var(--border); 
         }
-        .app-header .subtitle {
-            font-size: 13px;
-            color: var(--text-light);
+        .card-title { 
+            font-family: var(--font-serif); font-size: 18px; font-weight: 700; color: var(--primary); margin-bottom: 14px; 
         }
-        .tab-nav {
-            display: flex;
-            gap: 6px;
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 5px;
-            box-shadow: var(--shadow);
-            margin-bottom: 16px;
+        input[type="text"], textarea { 
+            width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); 
+            font-size: 15px; font-family: var(--font-sans); background: #fffefb; color: var(--text); resize: vertical; 
         }
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 600;
-            border-radius: 10px;
-            background: transparent;
-            color: var(--text-light);
-            transition: 0.2s;
+        textarea { min-height: 100px; }
+        .input-row { display: flex; gap: 10px; }
+        .input-row > div { flex: 1; }
+        .btn { 
+            padding: 10px 18px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; 
+            cursor: pointer; transition: 0.2s; margin: 4px; 
         }
-        .tab-btn.active {
-            background: var(--primary);
-            color: #fff;
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-outline { background: #fff; color: var(--primary); border: 1.5px solid var(--primary); }
+        .btn-danger { background: #fff; color: var(--danger); border: 1px solid var(--danger); }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        .btn-full { width: 100%; }
+        .btn:active { transform: scale(0.96); }
+        .word-list { list-style: none; max-height: 400px; overflow-y: auto; }
+        .word-item { 
+            display: flex; align-items: center; gap: 10px; padding: 10px; border-bottom: 1px solid #f0e8d8; 
         }
-        .page {
-            display: none;
+        .word-item .word-text { 
+            font-family: var(--font-serif); font-size: 18px; font-weight: 700; color: var(--accent); 
         }
-        .page.active {
-            display: block;
+        .word-item .word-translation { flex: 1; font-size: 14px; }
+        .test-word-display { 
+            text-align: center; padding: 30px; background: #fefcf7; border-radius: var(--radius); 
+            border: 2px dashed var(--border); margin-bottom: 16px; 
         }
-        .card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 20px;
-            margin-bottom: 14px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
+        .test-word-display .ancient-word { 
+            font-family: var(--font-serif); font-size: 52px; font-weight: 900; color: var(--accent); 
         }
-        .card-title {
-            font-family: var(--font-serif);
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 14px;
+        .test-actions { display: flex; gap: 8px; justify-content: center; }
+        .hint-display { 
+            background: #fef9f0; border: 1px solid #e8d9b8; border-radius: 8px; 
+            padding: 12px; margin-top: 10px; text-align: center; color: #8b6914; 
         }
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 11px 14px;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-size: 15px;
-            font-family: var(--font-sans);
-            background: #fffefb;
-            color: var(--text);
-            resize: vertical;
+        .feedback { 
+            text-align: center; padding: 10px; border-radius: 8px; margin-top: 10px; font-weight: 600; 
         }
-        textarea {
-            min-height: 100px;
+        .feedback.correct { background: #e6f4e6; color: #2d6a2d; }
+        .feedback.wrong { background: #fde8e8; color: #a03030; }
+        .feedback.answer-reveal { background: #fef5e7; color: #8b5e1a; border: 1px solid #f0c060; }
+        .stats-bar { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px; }
+        .stat-item { 
+            background: #fffefb; border-radius: 20px; padding: 8px 14px; font-size: 13px; font-weight: 600; 
+            box-shadow: var(--shadow); border: 1px solid var(--border); 
         }
-        .input-row {
-            display: flex;
-            gap: 10px;
+        .empty-state { text-align: center; padding: 40px; color: var(--text-light); }
+        #envWarning { 
+            background: #fff3cd; border: 2px solid #ffc107; color: #856404; padding: 14px; 
+            border-radius: 8px; margin-bottom: 12px; font-weight: 600; display: none; 
         }
-        .input-row>div {
-            flex: 1;
+        .toast { 
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #3e2f1c; 
+            color: #fff; padding: 10px 22px; border-radius: 24px; font-weight: 600; z-index: 999; 
+            animation: toastIn 0.3s ease; pointer-events: none; 
         }
-        .btn {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            margin: 4px;
-        }
-        .btn-primary {
-            background: var(--primary);
-            color: #fff;
-        }
-        .btn-outline {
-            background: #fff;
-            color: var(--primary);
-            border: 1.5px solid var(--primary);
-        }
-        .btn-danger {
-            background: #fff;
-            color: var(--danger);
-            border: 1px solid var(--danger);
-        }
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 12px;
-        }
-        .btn-full {
-            width: 100%;
-        }
-        .btn:active {
-            transform: scale(0.96);
-        }
-        .word-list {
-            list-style: none;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        .word-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            border-bottom: 1px solid #f0e8d8;
-        }
-        .word-item .word-text {
-            font-family: var(--font-serif);
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--accent);
-        }
-        .word-item .word-translation {
-            flex: 1;
-            font-size: 14px;
-        }
-        .test-word-display {
-            text-align: center;
-            padding: 30px;
-            background: #fefcf7;
-            border-radius: var(--radius);
-            border: 2px dashed var(--border);
-            margin-bottom: 16px;
-        }
-        .test-word-display .ancient-word {
-            font-family: var(--font-serif);
-            font-size: 52px;
-            font-weight: 900;
-            color: var(--accent);
-        }
-        .test-actions {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-        }
-        .hint-display {
-            background: #fef9f0;
-            border: 1px solid #e8d9b8;
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 10px;
-            text-align: center;
-            color: #8b6914;
-        }
-        .feedback {
-            text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 10px;
-            font-weight: 600;
-        }
-        .feedback.correct {
-            background: #e6f4e6;
-            color: #2d6a2d;
-        }
-        .feedback.wrong {
-            background: #fde8e8;
-            color: #a03030;
-        }
-        .feedback.answer-reveal {
-            background: #fef5e7;
-            color: #8b5e1a;
-            border: 1px solid #f0c060;
-        }
-        .stats-bar {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-top: 12px;
-        }
-        .stat-item {
-            background: #fffefb;
-            border-radius: 20px;
-            padding: 8px 14px;
-            font-size: 13px;
-            font-weight: 600;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-        }
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-light);
-        }
-        #envWarning {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            color: #856404;
-            padding: 14px;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            font-weight: 600;
-            display: none;
-        }
-        .toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #3e2f1c;
-            color: #fff;
-            padding: 10px 22px;
-            border-radius: 24px;
-            font-weight: 600;
-            z-index: 999;
-            animation: toastIn 0.3s ease;
-            pointer-events: none;
-        }
-        @keyframes toastIn {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
+        @keyframes toastIn { 
+            from { opacity: 0; transform: translateX(-50%) translateY(-20px); } 
+            to { opacity: 1; transform: translateX(-50%) translateY(0); } 
         }
     </style>
 </head>
@@ -291,11 +126,9 @@
             <h1>📜 文言文字词背诵</h1>
             <p class="subtitle">初中古汉语 · 字词翻译练习</p>
         </header>
-
-        <div id="envWarning">
-            ⚠️ <strong>环境异常</strong>：您的浏览器可能禁用了数据存储功能，或处于隐私模式。请允许本站使用本地存储，否则词库数据无法保存。
+        <div id="envWarning"> 
+            ⚠️ <strong>环境异常</strong>：您的浏览器可能禁用了数据存储功能，或处于隐私模式。请允许本站使用本地存储，否则词库数据无法保存。 
         </div>
-
         <nav class="tab-nav">
             <button class="tab-btn active" id="tabBtn1">📖 自习导入</button>
             <button class="tab-btn" id="tabBtn2">✍️ 随机测试</button>
@@ -319,19 +152,16 @@
                 <button class="btn btn-outline btn-sm" id="cancelEditBtn" style="display:none">✕ 取消编辑</button>
                 <input type="hidden" id="editingId" value="">
             </div>
-
             <div class="card">
                 <div class="card-title">📥 批量导入</div>
                 <label>每行一条，用 —— 或 ： 分隔</label>
                 <textarea id="batchInput" placeholder="之——的；用于主谓之间&#10;而——表转折，却"></textarea>
                 <button class="btn btn-primary btn-full" id="batchBtn">📥 批量导入</button>
             </div>
-
             <div class="card">
-                <div class="card-title">
-                    📚 我的词库 <span id="wordCount"></span>
-                    <button class="btn btn-outline btn-sm" id="sampleBtn">📋 示例</button>
-                    <button class="btn btn-outline btn-sm" id="exportBtn">📤 导出</button>
+                <div class="card-title"> 📚 我的词库 <span id="wordCount"></span> 
+                    <button class="btn btn-outline btn-sm" id="sampleBtn">📋 示例</button> 
+                    <button class="btn btn-outline btn-sm" id="exportBtn">📤 导出</button> 
                     <button class="btn btn-danger btn-sm" id="clearBtn">🗑 清空</button>
                 </div>
                 <input type="text" id="searchInput" placeholder="🔍 搜索..." style="margin-bottom:10px">
@@ -342,9 +172,9 @@
 
         <!-- 页面2：随机测试 -->
         <div class="page" id="page2">
-            <div id="emptyTestState" class="card empty-state">
-                📭 词库中还没有数据，请先导入字词
-                <br><button class="btn btn-primary" id="goImportBtn">📖 前往导入</button>
+            <div id="emptyTestState" class="card empty-state"> 
+                📭 词库中还没有数据，请先导入字词 
+                <br><button class="btn btn-primary" id="goImportBtn">📖 前往导入</button> 
             </div>
             <div id="testContent">
                 <div class="card">
@@ -363,7 +193,7 @@
                 </div>
                 <div class="stats-bar">
                     <span class="stat-item">📝 已测试：<span id="statTotal">0</span></span>
-                    <span class="stat-item">✅ 正确：<span id="statCorrect">0</span></span>
+                    <span class="stat-item">✅ 正确：<span id="statItem">0</span></span>
                     <span class="stat-item">📊 正确率：<span id="statRate">-</span></span>
                     <span class="stat-item">🔄 当前题尝试：<span id="statAttempts">0</span>/3</span>
                 </div>
@@ -377,7 +207,6 @@
             // ========== 环境检测 ==========
             const envWarning = document.getElementById('envWarning');
             let storageAvailable = false;
-
             function testStorage() {
                 try {
                     const testKey = '__storage_test__';
@@ -395,7 +224,6 @@
 
             // ========== 数据管理 ==========
             const STORAGE_KEY = 'wenyan_words_v2';
-
             function loadData() {
                 if (!storageAvailable) return [];
                 try {
@@ -409,7 +237,6 @@
                     return [];
                 }
             }
-
             function saveData(data) {
                 if (!storageAvailable) {
                     showToast('⚠️ 存储不可用，请检查浏览器设置');
@@ -423,11 +250,9 @@
                     return false;
                 }
             }
-
             function generateId() {
                 return 'w_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
             }
-
             function addWord(word, translation) {
                 const data = loadData();
                 const item = {
@@ -440,7 +265,6 @@
                 saveData(data);
                 return item;
             }
-
             function updateWord(id, word, translation) {
                 const data = loadData();
                 const idx = data.findIndex(i => i.id === id);
@@ -449,18 +273,15 @@
                 data[idx].translation = translation.trim();
                 return saveData(data);
             }
-
             function deleteWord(id) {
                 const data = loadData();
                 const filtered = data.filter(i => i.id !== id);
                 if (filtered.length === data.length) return false;
                 return saveData(filtered);
             }
-
             function clearAllData() {
                 return saveData([]);
             }
-
             function getRandomWord(excludeId) {
                 const data = loadData();
                 if (data.length === 0) return null;
@@ -469,7 +290,7 @@
                 return candidates[Math.floor(Math.random() * candidates.length)];
             }
 
-            // ========== Toast ==========
+            // ========== Toast 通知 ==========
             function showToast(msg, dur) {
                 dur = dur || 2000;
                 const container = document.getElementById('toastContainer');
@@ -509,10 +330,12 @@
                 const listEl = document.getElementById('wordList');
                 const emptyHint = document.getElementById('emptyHint');
                 const countEl = document.getElementById('wordCount');
-
                 countEl.textContent = '(' + data.length + '条)';
-
-                let filtered = q ? data.filter(i => i.word.toLowerCase().includes(q) || i.translation.toLowerCase().includes(q)) : data;
+                
+                let filtered = q ? data.filter(i => 
+                    i.word.toLowerCase().includes(q) || 
+                    i.translation.toLowerCase().includes(q)
+                ) : data;
 
                 if (filtered.length === 0) {
                     listEl.innerHTML = '';
@@ -520,18 +343,19 @@
                     return;
                 }
                 emptyHint.style.display = 'none';
+
                 listEl.innerHTML = filtered.map(i => {
                     const safeWord = i.word.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                     const safeTrans = i.translation.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                     return `
-                    <li class="word-item">
-                        <span class="word-text">${safeWord}</span>
-                        <span class="word-translation">${safeTrans}</span>
-                        <span>
-                            <button class="btn btn-outline btn-sm edit-word-btn" data-id="${i.id}">✏️</button>
-                            <button class="btn btn-danger btn-sm delete-word-btn" data-id="${i.id}">🗑</button>
-                        </span>
-                    </li>`;
+                        <li class="word-item">
+                            <span class="word-text">${safeWord}</span>
+                            <span class="word-translation">${safeTrans}</span>
+                            <span>
+                                <button class="btn btn-outline btn-sm edit-word-btn" data-id="${i.id}">✏️</button>
+                                <button class="btn btn-danger btn-sm delete-word-btn" data-id="${i.id}">🗑</button>
+                            </span>
+                        </li>`;
                 }).join('');
 
                 // 绑定编辑和删除事件
@@ -552,7 +376,49 @@
                 listEl.querySelectorAll('.delete-word-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const id = this.getAttribute('data-id');
-                        const data = loadData();
-                        const item = data.find(i => i.id === id);
-                        if (!item) return
-     
+                        if (confirm('确定要删除这个词条吗？')) {
+                            deleteWord(id);
+                            renderWordList();
+                            showToast('🗑️ 已删除');
+                        }
+                    });
+                });
+            }
+
+            // ========== 添加/更新逻辑 ==========
+            document.getElementById('addBtn').addEventListener('click', function() {
+                const wordInput = document.getElementById('wordInput');
+                const transInput = document.getElementById('transInput');
+                const editingId = document.getElementById('editingId').value;
+                const word = wordInput.value.trim();
+                const trans = transInput.value.trim();
+
+                if (!word || !trans) {
+                    showToast('⚠️ 请输入字词和翻译');
+                    return;
+                }
+
+                if (editingId) {
+                    // 更新模式
+                    updateWord(editingId, word, trans);
+                    showToast('✅ 更新成功');
+                    // 重置表单
+                    document.getElementById('editingId').value = '';
+                    document.getElementById('addBtn').textContent = '✅ 添加到词库';
+                    document.getElementById('cancelEditBtn').style.display = 'none';
+                } else {
+                    // 添加模式
+                    addWord(word, trans);
+                    showToast('🎉 添加成功');
+                }
+                
+                wordInput.value = '';
+                transInput.value = '';
+                renderWordList();
+            });
+
+            // 取消编辑
+            document.getElementById('cancelEditBtn').addEventListener('click', function() {
+                document.getElementById('editingId').value = '';
+                document.getElementById('addBtn').textContent = '✅ 添加到词库';
+                document.getElementById('cancelEditBtn').style.disp
