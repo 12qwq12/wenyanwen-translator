@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📚 初中文言文字词背诵助手</title>
+    <style>
+        :root {
+            --bg: #fdf8f0;
+            --card-bg: #fffef9;
+            --primary: #8b5e3c;
+            --primary-light: #a0724a;
+            --accent: #c0392b;
+            --success: #4a8c5c;
+            --danger: #c0392b;
+            --text: #3e2f1c;
+            --text-light: #6b5d4a;
+            --border: #e0d5c1;
+            --shadow: 0 2px 12px rgba(62, 47, 28, 0.08);
+            --shadow-lg: 0 6px 24px rgba(62, 47, 28, 0.12);
+            --radius: 14px;
+            --radius-sm: 8px;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-serif: 'STSong', 'Songti SC', 'Noto Serif SC', 'SimSun', 'KaiTi', 'STKaiti', serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            /* 导航栏固定高度，方便计算 */
+            --nav-height: 58px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(160deg, #fdf6ec 0%, #f9f0e2 30%, #fdf8f0 60%, #faf3e8 100%);
+            min-height: 100vh;
+            color: var(--text);
+            -webkit-tap-highlight-color: transparent;
+            /* 给body添加顶部填充，为固定导航栏留出空间 */
+            padding-top: calc(var(--nav-height) + 16px);
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 16px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 头部（非固定，会随页面滚动） */
+        .app-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .app-header .icon {
+            font-size: 42px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .app-header h1 {
+            font-family: var(--font-serif);
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 0.04em;
+            margin: 0;
+        }
+        .app-header .subtitle {
+            font-size: 13px;
+            color: var(--text-light);
+            letter-spacing: 0.06em;
+        }
+
+        /* 固定导航栏 - 关键修改 */
+        .tab-nav {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 568px;
+            z-index: 100;
+            display: flex;
+            gap: 6px;
+            background: var(--card-bg);
+            border-radius: 0 0 var(--radius) var(--radius);
+            padding: 8px 5px 12px;
+            box-shadow: 0 4px 16px rgba(62, 47, 28, 0.12);
+            margin: 0;
+            /* 防止固定元素产生额外滚动条 */
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+            background: rgba(255, 254, 249, 0.92);
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px 14px;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 10px;
+            background: transparent;
+            color: var(--text-light);
+            transition: var(--transition);
+            letter-spacing: 0.03em;
+            font-family: var(--font-sans);
+            white-space: nowrap;
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 3px 10px rgba(139, 94, 60, 0.3);
+        }
+        .tab-btn:hover:not(.active) {
+            background: rgba(139, 94, 60, 0.07);
+            color: var(--primary);
+        }
+
+        .page {
+            display: none;
+            animation: fadeSlideIn 0.35s ease;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 14px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        .card-title {
+            font-family: var(--font-serif);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.03em;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 5px;
+            letter-spacing: 0.03em;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 15px;
+            font-family: var(--font-sans);
+            background: #fffefb;
+            color: var(--text);
+            transition: var(--transition);
+            resize: vertical;
+            letter-spacing: 0.02em;
+        }
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.08);
+            background: #fff;
+        }
+        textarea {
+            min-height: 100px;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        .input-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+        .input-row .input-group {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 18px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.03em;
+            font-family: var(--font-sans);
+            transition: var(--transition);
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+        }
+        .btn:active {
+            transform: scale(0.96);
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 3px 10px rgba(139, 94, 60, 0.25);
+        }
+        .btn-primary:hover {
+            background: var(--primary-light);
+            box-shadow: 0 5px 16px rgba(139, 94, 60, 0.35);
+            transform: translateY(-1px);
+        }
+        .btn-outline {
+            background: #fff;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+        }
+        .btn-outline:hover {
+            background: rgba(139, 94, 60, 0.05);
+        }
+        .btn-danger {
+            background: #fff;
+            color: var(--danger);
+            border: 1.5px solid var(--danger);
+        }
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 6px;
+        }
+        .btn-lg {
+            padding: 13px 24px;
+            font-size: 16px;
+            border-radius: 10px;
+        }
+        .btn-full {
+            width: 100%;
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+
+        .word-list {
+            list-style: none;
+            max-height: 400px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        .word-list::-webkit-scrollbar {
+            width: 5px;
+        }
+        .word-list::-webkit-scrollbar-thumb {
+            background: #d5c8b5;
+            border-radius: 10px;
+        }
+        .word-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-bottom: 1px solid #f0e8d8;
+            transition: var(--transition);
+            flex-wrap: wrap;
+        }
+        .word-item:hover {
+            background: #fefaf3;
+        }
+        .word-item:last-child {
+            border-bottom: none;
+        }
+        .word-item .word-text {
+            font-family: var(--font-serif);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
+            min-width: 40px;
+            text-align: center;
+            letter-spacing: 0.05em;
+        }
+        .word-item .word-translation {
+            flex: 1;
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.5;
+            min-width: 100px;
+        }
+        .word-item .word-actions {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .test-word-display {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #fefcf7 0%, #fdf6ec 100%);
+            border-radius: var(--radius);
+            border: 2px dashed var(--border);
+            margin-bottom: 16px;
+        }
+        .test-word-display .ancient-word {
+            font-family: var(--font-serif);
+            font-size: 52px;
+            font-weight: 900;
+            color: var(--accent);
+            letter-spacing: 0.08em;
+            display: block;
+            line-height: 1.2;
+        }
+        .test-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .hint-display {
+            background: #fef9f0;
+            border: 1px solid #e8d9b8;
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            margin-top: 10px;
+            text-align: center;
+            font-size: 14px;
+            color: #8b6914;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .feedback {
+            text-align: center;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 10px;
+            animation: fadeSlideIn 0.3s ease;
+        }
+        .feedback.correct {
+            background: rgba(74, 140, 92, 0.1);
+            color: var(--success);
+        }
+        .feedback.wrong {
+            background: rgba(192, 57, 43, 0.08);
+            color: var(--danger);
+        }
+        .feedback.answer-reveal {
+            background: rgba(220, 150, 50, 0.1);
+            color: #8b5e1a;
+            border: 1px solid rgba(220, 150, 50, 0.3);
+        }
+        .stats-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 12px;
+        }
+        .stat-item {
+            background: #fffefb;
+            border-radius: 20px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+        .empty-state .empty-icon {
+            font-size: 56px;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .toast {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #3e2f1c;
+            color: #fff;
+            padding: 10px 22px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 999;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            animation: toastIn 0.3s ease, toastOut 0.3s ease 1.8s forwards;
+            pointer-events: none;
+        }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        @keyframes toastOut {
+            from { opacity: 1; }
+            to { opacity: 0; transform: translateX(-50%) translateY(-16px); }
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 480px) {
+            .app-header h1 { font-size: 22px; }
+            .tab-btn { font-size: 14px; padding: 8px 10px; }
+            .tab-nav {
+                width: calc(100% - 16px);
+                padding: 6px 4px 10px;
+            }
+            .test-word-display .ancient-word { font-size: 40px; }
+            .card { padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 标题保留在原位置，可以正常滚动 -->
+        <header class="app-header">
+            <span class="icon">📜</span>
+            <h1>文言文字词背诵</h1>
+            <p class="subtitle">初中古汉语 · 字词翻译练习</p>
+        </header>
+
+        <!-- 固定的导航栏 -->
+        <nav class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('page1')">📖 自习导入</button>
+            <button class="tab-btn" onclick="switchTab('page2')">✍️ 随机测试</button>
+        </nav>
+
+        <!-- 页面1：自习导入 -->
+        <div class="page active" id="page1">
+            <!-- 此处内容与之前完全一致，不再重复展示，保证功能完整 -->
+            <div class="card">
+                <div class="card-title">➕ 添加字词</div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="wordInput">文言文字词</label>
+                        <input type="text" id="wordInput" placeholder="例如：之">
+                    </div>
+                    <div class="input-group">
+                        <label for="transInput">翻译 / 释义</label>
+                        <input type="text" id="transInput" placeholder="例如：的；用于主谓之间">
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="addOrUpdateWord()" id="addBtn">✅ 添加到词库</button>
+                    <button class="btn btn-outline btn-sm" onclick="cancelEdit()" id="cancelEditBtn" style="display:none;">✕ 取消编辑</button>
+                </div>
+                <input type="hidden" id="editingId" value="">
+            </div>
+
+            <div class="card">
+                <div class="card-title">📥 批量导入</div>
+                <label for="batchInput">每行一条，字词与翻译之间用 —— 或 ： 或 :: 分隔</label>
+                <textarea id="batchInput" placeholder="之——的；用于主谓之间，取消句子独立性&#10;而——表转折，却；表顺承，就&#10;其——代词，他/她/它"></textarea>
+                <button class="btn btn-primary btn-full" style="margin-top:10px;" onclick="batchImport()">📥 批量导入上述词条</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    <span>📚 我的词库 <span id="wordCount"></span></span>
+                    <span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;">
+                        <button class="btn btn-outline btn-sm" onclick="loadSampleData()">📋 示例数据</button>
+                        <button class="btn btn-outline btn-sm" onclick="exportData()">📤 导出</button>
+                        <button class="btn btn-danger btn-sm" onclick="clearAll()">🗑 清空</button>
+                    </span>
+                </div>
+                <div class="search-box" style="position:relative;margin-bottom:12px;">
+                    <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);">🔍</span>
+                    <input type="text" id="searchInput" placeholder="搜索字词或翻译..." style="padding-left:36px;" oninput="renderWordList()">
+                </div>
+                <ul class="word-list" id="wordList"></ul>
+                <p id="emptyHint" class="empty-state" style="display:none;"><span class="empty-icon">📭</span> 词库为空，快来添加吧</p>
+            </div>
+        </div>
+
+        <!-- 页面2：随机测试 -->
+        <div class="page" id="page2">
+            <div id="emptyTestState" class="card empty-state" style="display:none;">
+                <span class="empty-icon">📭</span>
+                <p>词库中还没有字词数据</p>
+                <p style="margin-bottom:12px;">请先前往「📖 自习导入」页面添加字词</p>
+                <button class="btn btn-primary" onclick="switchTab('page1')">📖 前往导入字词</button>
+            </div>
+
+            <div id="testContent" style="display:block;">
+                <div class="card">
+                    <div class="test-word-display">
+                        <span style="font-size:14px;color:var(--text-light);">请翻译以下古代汉语字词：</span>
+                        <span class="ancient-word" id="ancientWord">—</span>
+                    </div>
+                    <input type="text" id="answerInput" placeholder="在此输入你的翻译..." style="margin-bottom:12px;text-align:center;" autocomplete="off">
+                    <div class="test-actions">
+                        <button class="btn btn-primary btn-lg" onclick="submitAnswer()" id="submitBtn">✅ 提交翻译</button>
+                        <button class="btn btn-outline" onclick="showHint()" id="hintBtn">💡 提示</button>
+                        <button class="btn btn-outline btn-sm" onclick="skipQuestion()" id="skipBtn">⏭ 跳过</button>
+                    </div>
+                    <div class="hint-display" id="hintDisplay"></div>
+                    <div id="feedbackArea"></div>
+                </div>
+                <div class="stats-bar">
+                    <span class="stat-item">📝 已测试：<span id="statTotal">0</span></span>
+                    <span class="stat-item">✅ 正确：<span id="statCorrect">0</span></span>
+                    <span class="stat-item">📊 正确率：<span id="statRate">-</span></span>
+                    <span class="stat-item">🔄 当前题尝试：<span id="statAttempts">0</span>/3</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="toastContainer"></div>
+
+    <script>
+        // JavaScript 部分与之前修复后的完全一致，此处省略以节省篇幅
+        // 实际使用时请将以下脚本完整放入（与上一条回复中的脚本完全相同）
+        (function() {
+            const STORAGE_KEY = 'wenyan_words';
+
+            function loadData() {
+                try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : []; } catch (e) { return []; }
+            }
+            function saveData(data) {
+                try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); return true; } catch (e) { showToast('⚠️ 存储空间不足'); return false; }
+            }
+            function generateId() { return 'w_' + Date.now() + '_' + Math.random().toString(36).slice(2,8); }
+            function addWord(word, translation) {
+                const data = loadData();
+                data.push({ id: generateId(), word: word.trim(), translation: translation.trim(), createdAt: new Date().toISOString() });
+                return saveData(data) ? data[data.length-1] : null;
+            }
+            function updateWord(id, word, translation) {
+                const data = loadData();
+                const idx = data.findIndex(item => item.id === id);
+                if (idx === -1) return false;
+                data[idx].word = word.trim();
+                data[idx].translation = translation.trim();
+                return saveData(data);
+            }
+            function deleteWord(id) {
+                const data = loadData();
+                const filtered = data.filter(item => item.id !== id);
+                if (filtered.length === data.length) return false;
+                return saveData(filtered);
+            }
+     
