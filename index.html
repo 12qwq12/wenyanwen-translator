@@ -17,89 +17,57 @@
             --text-light: #6b5d4a;
             --border: #e0d5c1;
             --shadow: 0 2px 12px rgba(62, 47, 28, 0.08);
-            --shadow-lg: 0 6px 24px rgba(62, 47, 28, 0.12);
             --radius: 14px;
             --radius-sm: 8px;
-            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            --font-serif: 'STSong', 'Songti SC', 'Noto Serif SC', 'SimSun', 'KaiTi', 'STKaiti', serif;
+            --font-serif: 'STSong', 'Songti SC', 'Noto Serif SC', 'SimSun', 'KaiTi', serif;
             --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            /* 导航栏固定高度，方便计算 */
-            --nav-height: 58px;
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: var(--font-sans);
             background: linear-gradient(160deg, #fdf6ec 0%, #f9f0e2 30%, #fdf8f0 60%, #faf3e8 100%);
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 16px;
             color: var(--text);
             -webkit-tap-highlight-color: transparent;
-            /* 给body添加顶部填充，为固定导航栏留出空间 */
-            padding-top: calc(var(--nav-height) + 16px);
         }
-
         .app-container {
             width: 100%;
             max-width: 600px;
-            margin: 0 auto;
-            padding: 0 16px 40px;
-            position: relative;
-            z-index: 1;
         }
-
-        /* 头部（非固定，会随页面滚动） */
         .app-header {
             text-align: center;
-            margin-bottom: 20px;
-        }
-        .app-header .icon {
-            font-size: 42px;
-            display: block;
-            margin-bottom: 4px;
+            margin-bottom: 16px;
         }
         .app-header h1 {
             font-family: var(--font-serif);
             font-size: 26px;
             font-weight: 700;
             color: var(--primary);
-            letter-spacing: 0.04em;
-            margin: 0;
         }
         .app-header .subtitle {
             font-size: 13px;
             color: var(--text-light);
-            letter-spacing: 0.06em;
         }
-
-        /* 固定导航栏 - 关键修改 */
         .tab-nav {
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 32px);
-            max-width: 568px;
-            z-index: 100;
             display: flex;
             gap: 6px;
             background: var(--card-bg);
-            border-radius: 0 0 var(--radius) var(--radius);
-            padding: 8px 5px 12px;
-            box-shadow: 0 4px 16px rgba(62, 47, 28, 0.12);
-            margin: 0;
-            /* 防止固定元素产生额外滚动条 */
-            -webkit-backdrop-filter: blur(6px);
-            backdrop-filter: blur(6px);
-            background: rgba(255, 254, 249, 0.92);
+            border-radius: var(--radius);
+            padding: 5px;
+            box-shadow: var(--shadow);
+            margin-bottom: 16px;
         }
         .tab-btn {
             flex: 1;
-            padding: 10px 14px;
+            padding: 12px;
             border: none;
             cursor: pointer;
             font-size: 15px;
@@ -107,39 +75,18 @@
             border-radius: 10px;
             background: transparent;
             color: var(--text-light);
-            transition: var(--transition);
-            letter-spacing: 0.03em;
-            font-family: var(--font-sans);
-            white-space: nowrap;
+            transition: 0.2s;
         }
         .tab-btn.active {
             background: var(--primary);
             color: #fff;
-            box-shadow: 0 3px 10px rgba(139, 94, 60, 0.3);
         }
-        .tab-btn:hover:not(.active) {
-            background: rgba(139, 94, 60, 0.07);
-            color: var(--primary);
-        }
-
         .page {
             display: none;
-            animation: fadeSlideIn 0.35s ease;
         }
         .page.active {
             display: block;
         }
-        @keyframes fadeSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         .card {
             background: var(--card-bg);
             border-radius: var(--radius);
@@ -147,7 +94,6 @@
             margin-bottom: 14px;
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
-            transition: var(--transition);
         }
         .card-title {
             font-family: var(--font-serif);
@@ -155,19 +101,6 @@
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            letter-spacing: 0.03em;
-        }
-
-        label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-light);
-            margin-bottom: 5px;
-            letter-spacing: 0.03em;
         }
         input[type="text"],
         textarea {
@@ -179,151 +112,78 @@
             font-family: var(--font-sans);
             background: #fffefb;
             color: var(--text);
-            transition: var(--transition);
             resize: vertical;
-            letter-spacing: 0.02em;
-        }
-        input[type="text"]:focus,
-        textarea:focus {
-            outline: none;
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 3px rgba(139, 94, 60, 0.08);
-            background: #fff;
         }
         textarea {
             min-height: 100px;
-            font-size: 14px;
-            line-height: 1.7;
         }
         .input-row {
             display: flex;
             gap: 10px;
-            align-items: flex-end;
-            flex-wrap: wrap;
         }
-        .input-row .input-group {
+        .input-row>div {
             flex: 1;
-            min-width: 120px;
         }
-
         .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
             padding: 10px 18px;
             border: none;
-            border-radius: var(--radius-sm);
+            border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            letter-spacing: 0.03em;
-            font-family: var(--font-sans);
-            transition: var(--transition);
-            white-space: nowrap;
-            position: relative;
-            overflow: hidden;
-            user-select: none;
-        }
-        .btn:active {
-            transform: scale(0.96);
+            transition: 0.2s;
+            margin: 4px;
         }
         .btn-primary {
             background: var(--primary);
             color: #fff;
-            box-shadow: 0 3px 10px rgba(139, 94, 60, 0.25);
-        }
-        .btn-primary:hover {
-            background: var(--primary-light);
-            box-shadow: 0 5px 16px rgba(139, 94, 60, 0.35);
-            transform: translateY(-1px);
         }
         .btn-outline {
             background: #fff;
             color: var(--primary);
             border: 1.5px solid var(--primary);
         }
-        .btn-outline:hover {
-            background: rgba(139, 94, 60, 0.05);
-        }
         .btn-danger {
             background: #fff;
             color: var(--danger);
-            border: 1.5px solid var(--danger);
+            border: 1px solid var(--danger);
         }
         .btn-sm {
             padding: 6px 12px;
             font-size: 12px;
-            border-radius: 6px;
-        }
-        .btn-lg {
-            padding: 13px 24px;
-            font-size: 16px;
-            border-radius: 10px;
         }
         .btn-full {
             width: 100%;
         }
-        .btn:disabled {
-            opacity: 0.5;
-            pointer-events: none;
-            cursor: not-allowed;
+        .btn:active {
+            transform: scale(0.96);
         }
-
         .word-list {
             list-style: none;
             max-height: 400px;
             overflow-y: auto;
-            scroll-behavior: smooth;
-        }
-        .word-list::-webkit-scrollbar {
-            width: 5px;
-        }
-        .word-list::-webkit-scrollbar-thumb {
-            background: #d5c8b5;
-            border-radius: 10px;
         }
         .word-item {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 12px 14px;
+            padding: 10px;
             border-bottom: 1px solid #f0e8d8;
-            transition: var(--transition);
-            flex-wrap: wrap;
-        }
-        .word-item:hover {
-            background: #fefaf3;
-        }
-        .word-item:last-child {
-            border-bottom: none;
         }
         .word-item .word-text {
             font-family: var(--font-serif);
             font-size: 18px;
             font-weight: 700;
             color: var(--accent);
-            min-width: 40px;
-            text-align: center;
-            letter-spacing: 0.05em;
         }
         .word-item .word-translation {
             flex: 1;
             font-size: 14px;
-            color: var(--text);
-            line-height: 1.5;
-            min-width: 100px;
         }
-        .word-item .word-actions {
-            display: flex;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-
         .test-word-display {
             text-align: center;
-            padding: 30px 20px;
-            background: linear-gradient(135deg, #fefcf7 0%, #fdf6ec 100%);
+            padding: 30px;
+            background: #fefcf7;
             border-radius: var(--radius);
             border: 2px dashed var(--border);
             margin-bottom: 16px;
@@ -333,52 +193,40 @@
             font-size: 52px;
             font-weight: 900;
             color: var(--accent);
-            letter-spacing: 0.08em;
-            display: block;
-            line-height: 1.2;
         }
         .test-actions {
             display: flex;
             gap: 8px;
-            flex-wrap: wrap;
             justify-content: center;
         }
         .hint-display {
             background: #fef9f0;
             border: 1px solid #e8d9b8;
-            border-radius: var(--radius-sm);
-            padding: 12px 16px;
+            border-radius: 8px;
+            padding: 12px;
             margin-top: 10px;
             text-align: center;
-            font-size: 14px;
             color: #8b6914;
-            min-height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
         }
         .feedback {
             text-align: center;
             padding: 10px;
-            border-radius: var(--radius-sm);
-            font-weight: 600;
-            font-size: 14px;
+            border-radius: 8px;
             margin-top: 10px;
-            animation: fadeSlideIn 0.3s ease;
+            font-weight: 600;
         }
         .feedback.correct {
-            background: rgba(74, 140, 92, 0.1);
-            color: var(--success);
+            background: #e6f4e6;
+            color: #2d6a2d;
         }
         .feedback.wrong {
-            background: rgba(192, 57, 43, 0.08);
-            color: var(--danger);
+            background: #fde8e8;
+            color: #a03030;
         }
         .feedback.answer-reveal {
-            background: rgba(220, 150, 50, 0.1);
+            background: #fef5e7;
             color: #8b5e1a;
-            border: 1px solid rgba(220, 150, 50, 0.3);
+            border: 1px solid #f0c060;
         }
         .stats-bar {
             display: flex;
@@ -393,141 +241,122 @@
             padding: 8px 14px;
             font-size: 13px;
             font-weight: 600;
-            color: var(--text);
             box-shadow: var(--shadow);
             border: 1px solid var(--border);
         }
         .empty-state {
             text-align: center;
-            padding: 40px 20px;
+            padding: 40px;
             color: var(--text-light);
         }
-        .empty-state .empty-icon {
-            font-size: 56px;
-            display: block;
+        #envWarning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+            padding: 14px;
+            border-radius: 8px;
             margin-bottom: 12px;
+            font-weight: 600;
+            display: none;
         }
-
         .toast {
             position: fixed;
-            top: 80px;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
             background: #3e2f1c;
             color: #fff;
             padding: 10px 22px;
             border-radius: 24px;
-            font-size: 14px;
             font-weight: 600;
             z-index: 999;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-            animation: toastIn 0.3s ease, toastOut 0.3s ease 1.8s forwards;
+            animation: toastIn 0.3s ease;
             pointer-events: none;
         }
         @keyframes toastIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-        @keyframes toastOut {
-            from { opacity: 1; }
-            to { opacity: 0; transform: translateX(-50%) translateY(-16px); }
-        }
-
-        /* 响应式调整 */
-        @media (max-width: 480px) {
-            .app-header h1 { font-size: 22px; }
-            .tab-btn { font-size: 14px; padding: 8px 10px; }
-            .tab-nav {
-                width: calc(100% - 16px);
-                padding: 6px 4px 10px;
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
             }
-            .test-word-display .ancient-word { font-size: 40px; }
-            .card { padding: 14px; }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- 标题保留在原位置，可以正常滚动 -->
         <header class="app-header">
-            <span class="icon">📜</span>
-            <h1>文言文字词背诵</h1>
+            <h1>📜 文言文字词背诵</h1>
             <p class="subtitle">初中古汉语 · 字词翻译练习</p>
         </header>
 
-        <!-- 固定的导航栏 -->
+        <div id="envWarning">
+            ⚠️ <strong>环境异常</strong>：您的浏览器可能禁用了数据存储功能，或处于隐私模式。请允许本站使用本地存储，否则词库数据无法保存。
+        </div>
+
         <nav class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('page1')">📖 自习导入</button>
-            <button class="tab-btn" onclick="switchTab('page2')">✍️ 随机测试</button>
+            <button class="tab-btn active" id="tabBtn1">📖 自习导入</button>
+            <button class="tab-btn" id="tabBtn2">✍️ 随机测试</button>
         </nav>
 
         <!-- 页面1：自习导入 -->
         <div class="page active" id="page1">
-            <!-- 此处内容与之前完全一致，不再重复展示，保证功能完整 -->
             <div class="card">
                 <div class="card-title">➕ 添加字词</div>
                 <div class="input-row">
-                    <div class="input-group">
-                        <label for="wordInput">文言文字词</label>
+                    <div>
+                        <label>文言文字词</label>
                         <input type="text" id="wordInput" placeholder="例如：之">
                     </div>
-                    <div class="input-group">
-                        <label for="transInput">翻译 / 释义</label>
+                    <div>
+                        <label>翻译 / 释义</label>
                         <input type="text" id="transInput" placeholder="例如：的；用于主谓之间">
                     </div>
                 </div>
-                <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
-                    <button class="btn btn-primary" onclick="addOrUpdateWord()" id="addBtn">✅ 添加到词库</button>
-                    <button class="btn btn-outline btn-sm" onclick="cancelEdit()" id="cancelEditBtn" style="display:none;">✕ 取消编辑</button>
-                </div>
+                <button class="btn btn-primary" id="addBtn">✅ 添加到词库</button>
+                <button class="btn btn-outline btn-sm" id="cancelEditBtn" style="display:none">✕ 取消编辑</button>
                 <input type="hidden" id="editingId" value="">
             </div>
 
             <div class="card">
                 <div class="card-title">📥 批量导入</div>
-                <label for="batchInput">每行一条，字词与翻译之间用 —— 或 ： 或 :: 分隔</label>
-                <textarea id="batchInput" placeholder="之——的；用于主谓之间，取消句子独立性&#10;而——表转折，却；表顺承，就&#10;其——代词，他/她/它"></textarea>
-                <button class="btn btn-primary btn-full" style="margin-top:10px;" onclick="batchImport()">📥 批量导入上述词条</button>
+                <label>每行一条，用 —— 或 ： 分隔</label>
+                <textarea id="batchInput" placeholder="之——的；用于主谓之间&#10;而——表转折，却"></textarea>
+                <button class="btn btn-primary btn-full" id="batchBtn">📥 批量导入</button>
             </div>
 
             <div class="card">
                 <div class="card-title">
-                    <span>📚 我的词库 <span id="wordCount"></span></span>
-                    <span style="margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;">
-                        <button class="btn btn-outline btn-sm" onclick="loadSampleData()">📋 示例数据</button>
-                        <button class="btn btn-outline btn-sm" onclick="exportData()">📤 导出</button>
-                        <button class="btn btn-danger btn-sm" onclick="clearAll()">🗑 清空</button>
-                    </span>
+                    📚 我的词库 <span id="wordCount"></span>
+                    <button class="btn btn-outline btn-sm" id="sampleBtn">📋 示例</button>
+                    <button class="btn btn-outline btn-sm" id="exportBtn">📤 导出</button>
+                    <button class="btn btn-danger btn-sm" id="clearBtn">🗑 清空</button>
                 </div>
-                <div class="search-box" style="position:relative;margin-bottom:12px;">
-                    <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);">🔍</span>
-                    <input type="text" id="searchInput" placeholder="搜索字词或翻译..." style="padding-left:36px;" oninput="renderWordList()">
-                </div>
+                <input type="text" id="searchInput" placeholder="🔍 搜索..." style="margin-bottom:10px">
                 <ul class="word-list" id="wordList"></ul>
-                <p id="emptyHint" class="empty-state" style="display:none;"><span class="empty-icon">📭</span> 词库为空，快来添加吧</p>
+                <p class="empty-state" id="emptyHint">📭 词库为空，快来添加吧</p>
             </div>
         </div>
 
         <!-- 页面2：随机测试 -->
         <div class="page" id="page2">
-            <div id="emptyTestState" class="card empty-state" style="display:none;">
-                <span class="empty-icon">📭</span>
-                <p>词库中还没有字词数据</p>
-                <p style="margin-bottom:12px;">请先前往「📖 自习导入」页面添加字词</p>
-                <button class="btn btn-primary" onclick="switchTab('page1')">📖 前往导入字词</button>
+            <div id="emptyTestState" class="card empty-state">
+                📭 词库中还没有数据，请先导入字词
+                <br><button class="btn btn-primary" id="goImportBtn">📖 前往导入</button>
             </div>
-
-            <div id="testContent" style="display:block;">
+            <div id="testContent">
                 <div class="card">
                     <div class="test-word-display">
-                        <span style="font-size:14px;color:var(--text-light);">请翻译以下古代汉语字词：</span>
+                        <span>请翻译以下古代汉语字词：</span>
                         <span class="ancient-word" id="ancientWord">—</span>
                     </div>
-                    <input type="text" id="answerInput" placeholder="在此输入你的翻译..." style="margin-bottom:12px;text-align:center;" autocomplete="off">
+                    <input type="text" id="answerInput" placeholder="在此输入你的翻译..." style="text-align:center;margin-bottom:10px">
                     <div class="test-actions">
-                        <button class="btn btn-primary btn-lg" onclick="submitAnswer()" id="submitBtn">✅ 提交翻译</button>
-                        <button class="btn btn-outline" onclick="showHint()" id="hintBtn">💡 提示</button>
-                        <button class="btn btn-outline btn-sm" onclick="skipQuestion()" id="skipBtn">⏭ 跳过</button>
+                        <button class="btn btn-primary btn-lg" id="submitBtn">✅ 提交翻译</button>
+                        <button class="btn btn-outline" id="hintBtn">💡 提示</button>
+                        <button class="btn btn-outline btn-sm" id="skipBtn">⏭ 跳过</button>
                     </div>
                     <div class="hint-display" id="hintDisplay"></div>
                     <div id="feedbackArea"></div>
@@ -544,35 +373,186 @@
     <div id="toastContainer"></div>
 
     <script>
-        // JavaScript 部分与之前修复后的完全一致，此处省略以节省篇幅
-        // 实际使用时请将以下脚本完整放入（与上一条回复中的脚本完全相同）
         (function() {
-            const STORAGE_KEY = 'wenyan_words';
+            // ========== 环境检测 ==========
+            const envWarning = document.getElementById('envWarning');
+            let storageAvailable = false;
+
+            function testStorage() {
+                try {
+                    const testKey = '__storage_test__';
+                    localStorage.setItem(testKey, '1');
+                    localStorage.removeItem(testKey);
+                    storageAvailable = true;
+                    envWarning.style.display = 'none';
+                } catch (e) {
+                    storageAvailable = false;
+                    envWarning.style.display = 'block';
+                    console.error('localStorage 不可用:', e);
+                }
+            }
+            testStorage();
+
+            // ========== 数据管理 ==========
+            const STORAGE_KEY = 'wenyan_words_v2';
 
             function loadData() {
-                try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : []; } catch (e) { return []; }
+                if (!storageAvailable) return [];
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (!raw) return [];
+                    const data = JSON.parse(raw);
+                    if (!Array.isArray(data)) return [];
+                    return data;
+                } catch (e) {
+                    console.error('读取数据失败:', e);
+                    return [];
+                }
             }
+
             function saveData(data) {
-                try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); return true; } catch (e) { showToast('⚠️ 存储空间不足'); return false; }
+                if (!storageAvailable) {
+                    showToast('⚠️ 存储不可用，请检查浏览器设置');
+                    return false;
+                }
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                    return true;
+                } catch (e) {
+                    showToast('⚠️ 存储空间不足，请清理一些数据');
+                    return false;
+                }
             }
-            function generateId() { return 'w_' + Date.now() + '_' + Math.random().toString(36).slice(2,8); }
+
+            function generateId() {
+                return 'w_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+            }
+
             function addWord(word, translation) {
                 const data = loadData();
-                data.push({ id: generateId(), word: word.trim(), translation: translation.trim(), createdAt: new Date().toISOString() });
-                return saveData(data) ? data[data.length-1] : null;
+                const item = {
+                    id: generateId(),
+                    word: word.trim(),
+                    translation: translation.trim(),
+                    createdAt: new Date().toISOString()
+                };
+                data.push(item);
+                saveData(data);
+                return item;
             }
+
             function updateWord(id, word, translation) {
                 const data = loadData();
-                const idx = data.findIndex(item => item.id === id);
+                const idx = data.findIndex(i => i.id === id);
                 if (idx === -1) return false;
                 data[idx].word = word.trim();
                 data[idx].translation = translation.trim();
                 return saveData(data);
             }
+
             function deleteWord(id) {
                 const data = loadData();
-                const filtered = data.filter(item => item.id !== id);
+                const filtered = data.filter(i => i.id !== id);
                 if (filtered.length === data.length) return false;
                 return saveData(filtered);
             }
+
+            function clearAllData() {
+                return saveData([]);
+            }
+
+            function getRandomWord(excludeId) {
+                const data = loadData();
+                if (data.length === 0) return null;
+                const candidates = excludeId ? data.filter(i => i.id !== excludeId) : data;
+                if (candidates.length === 0) return data[0];
+                return candidates[Math.floor(Math.random() * candidates.length)];
+            }
+
+            // ========== Toast ==========
+            function showToast(msg, dur) {
+                dur = dur || 2000;
+                const container = document.getElementById('toastContainer');
+                const t = document.createElement('div');
+                t.className = 'toast';
+                t.textContent = msg;
+                container.appendChild(t);
+                setTimeout(() => {
+                    if (t.parentNode) t.parentNode.removeChild(t);
+                }, dur + 300);
+            }
+
+            // ========== 页面切换 ==========
+            let currentPage = 'page1';
+            window.switchTab = function(page) {
+                currentPage = page;
+                document.getElementById('page1').classList.toggle('active', page === 'page1');
+                document.getElementById('page2').classList.toggle('active', page === 'page2');
+                document.getElementById('tabBtn1').classList.toggle('active', page === 'page1');
+                document.getElementById('tabBtn2').classList.toggle('active', page === 'page2');
+                if (page === 'page1') {
+                    renderWordList();
+                } else {
+                    initTestPage();
+                    setTimeout(() => {
+                        const inp = document.getElementById('answerInput');
+                        if (inp && !inp.disabled) inp.focus();
+                    }, 200);
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            // ========== 词库渲染 ==========
+            function renderWordList() {
+                const data = loadData();
+                const q = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+                const listEl = document.getElementById('wordList');
+                const emptyHint = document.getElementById('emptyHint');
+                const countEl = document.getElementById('wordCount');
+
+                countEl.textContent = '(' + data.length + '条)';
+
+                let filtered = q ? data.filter(i => i.word.toLowerCase().includes(q) || i.translation.toLowerCase().includes(q)) : data;
+
+                if (filtered.length === 0) {
+                    listEl.innerHTML = '';
+                    emptyHint.style.display = 'block';
+                    return;
+                }
+                emptyHint.style.display = 'none';
+                listEl.innerHTML = filtered.map(i => {
+                    const safeWord = i.word.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const safeTrans = i.translation.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    return `
+                    <li class="word-item">
+                        <span class="word-text">${safeWord}</span>
+                        <span class="word-translation">${safeTrans}</span>
+                        <span>
+                            <button class="btn btn-outline btn-sm edit-word-btn" data-id="${i.id}">✏️</button>
+                            <button class="btn btn-danger btn-sm delete-word-btn" data-id="${i.id}">🗑</button>
+                        </span>
+                    </li>`;
+                }).join('');
+
+                // 绑定编辑和删除事件
+                listEl.querySelectorAll('.edit-word-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        const data = loadData();
+                        const item = data.find(i => i.id === id);
+                        if (!item) return;
+                        document.getElementById('wordInput').value = item.word;
+                        document.getElementById('transInput').value = item.translation;
+                        document.getElementById('editingId').value = id;
+                        document.getElementById('addBtn').textContent = '💾 更新词条';
+                        document.getElementById('cancelEditBtn').style.display = 'inline-block';
+                    });
+                });
+
+                listEl.querySelectorAll('.delete-word-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        const data = loadData();
+                        const item = data.find(i => i.id === id);
+                        if (!item) return
      
