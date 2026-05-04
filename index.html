@@ -652,11 +652,11 @@
 
     try {
         // ✅ 这里改成你自己的 Vercel 转发地址
-        const response = await fetch('https://wenyanwen-translator.vercel.app/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: msg })
-        });
+        const response = await fetch('/.netlify/functions/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: msg })
+});
 
         const data = await response.json();
         loadingDiv.remove();
