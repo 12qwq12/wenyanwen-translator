@@ -1,13 +1,20 @@
-// api/chat.js
-export default async function handler(req, res) {
+// netlify/functions/chat.js
+exports.handler = async (event) => {
     // 只允许 POST 请求
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
+    if (event.httpMethod !== 'POST') {
+        return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
     }
 
-    const { message } = req.body;
+    let message;
+    try {
+        const body = JSON.parse(event.body);
+        message = body.message;
+    } catch (e) {
+        return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) };
+    }
+
     if (!message) {
-        return res.status(400).json({ error: 'Missing message' });
+        return { statusCode: 400, body: JSON.stringify({ error: 'Missing message' }) };
     }
 
     try {
@@ -20,7 +27,7 @@ export default async function handler(req, res) {
             body: JSON.stringify({
                 model: 'moonshot-v1-8k',
                 messages: [
-                    { role: 'system', content: '你是初中文言文学习助手，擅长解释字词含义，耐心解答问题。' },
+                    { role: 'system', content: '你是初中文言文学习助手，擅长解释字词，耐心解答。' },
                     { role: 'user', content: message }
                 ],
                 temperature: 0.7
@@ -28,9 +35,16 @@ export default async function handler(req, res) {
         });
 
         const data = await response.json();
-        const reply = data.choices?.[0]?.message?.content || '抱歉，我暂时无法回复。';
-        return res.status(200).json({ reply });
+        const reply = data.choices?.[0]?.message?.content || 'AI 未返回有效回复';
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ reply })
+        };
     } catch (error) {
-        return res.status(500).json({ error: 'AI 请求失败', details: error.message });
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: 'AI 请求失败', details: error.message })
+        };
     }
-}
+};
